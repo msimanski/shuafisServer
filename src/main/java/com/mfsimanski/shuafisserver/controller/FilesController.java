@@ -24,7 +24,7 @@ import com.mfsimanski.shuafisserver.service.FilesStorageService;
 
 
 @Controller
-@CrossOrigin("http://localhost:2907")
+@CrossOrigin("http://localhost:2908")
 public class FilesController {
 
   @Autowired
@@ -32,6 +32,34 @@ public class FilesController {
 
   @PostMapping("/upload")
   public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+    String message = "";
+    try {
+      storageService.save(file);
+
+      message = "Uploaded the file successfully: " + file.getOriginalFilename();
+      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+    } catch (Exception e) {
+      message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+    }
+  }
+  
+  @PostMapping("/comparenton")
+  public ResponseEntity<ResponseMessage> compareNToN(@RequestParam("file") MultipartFile file) {
+    String message = "";
+    try {
+      storageService.save(file);
+
+      message = "Uploaded the file successfully: " + file.getOriginalFilename();
+      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+    } catch (Exception e) {
+      message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+    }
+  }
+  
+  @PostMapping("/compareoneton")
+  public ResponseEntity<ResponseMessage> compareOneToN(@RequestParam("file") MultipartFile file) {
     String message = "";
     try {
       storageService.save(file);

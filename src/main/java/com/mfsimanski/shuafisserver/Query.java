@@ -6,7 +6,7 @@ import com.machinezoo.sourceafis.FingerprintTemplate;
 
 public class Query
 {
-	public static boolean findNToN(int threshold, byte[] probeImage, byte[] canidateImage, boolean[] fingers) 
+	public static boolean compareNToN(int threshold, byte[] probeImage, byte[] canidateImage, boolean[] fingers) 
 	{
 		// Fingers goes:
 		// Left index	0
@@ -36,18 +36,21 @@ public class Query
 		}
 	}
 
-	public static Profile findOneToN(FingerprintTemplate probe, Iterable<Profile> candidates)
+	public static Profile compareOneToN(FingerprintTemplate probe, Iterable<Profile> candidates)
 	{
 		FingerprintMatcher matcher = new FingerprintMatcher().index(probe);
 		Profile match = null;
 		double high = 0;
 		for (Profile candidate : candidates)
 		{
-			double score = matcher.match(candidate.template);
-			if (score > high)
+			for(FingerprintTemplate template : candidate.prints.getIterableOfPrints())
 			{
-				high = score;
-				match = candidate;
+				double score = matcher.match(template);
+				if (score > high)
+				{
+					high = score;
+					match = candidate;
+				}
 			}
 		}
 		double threshold = 40;
