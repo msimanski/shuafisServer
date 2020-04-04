@@ -54,96 +54,223 @@ public class Prints
 		return dummy;
 	}
 	
-	public void loadTemplatesToMemory(int index, ArrayList<String> pathArrayList) throws IOException 
+	public void loadTemplatesToMemory(int index, ArrayList<String> pathArrayList, boolean cache) throws IOException 
 	{
-		byte[] probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-		FingerprintTemplate probe = new FingerprintTemplate(
-			    new FingerprintImage()
-			        .dpi(500)
-			        .decode(probeImage));
+		if (cache)
+		{
+			byte[] probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			FingerprintTemplate probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+			
+			// This snippet saves it to a compressed format for faster load times
+			byte[] serialized = probe.toByteArray();
+			String directory = Paths.get(pathArrayList.get(index)).getParent().toString();
+			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
-		this.leftIndex = probe;
-		index++;
-		
-		probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-		probe = new FingerprintTemplate(
-			    new FingerprintImage()
-			        .dpi(500)
-			        .decode(probeImage));
+			this.leftIndex = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+			
+			serialized = probe.toByteArray();
+			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
-		this.leftLittle = probe;
-		index++;
-		
-		probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-		probe = new FingerprintTemplate(
-			    new FingerprintImage()
-			        .dpi(500)
-			        .decode(probeImage));
+			this.leftLittle = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+			
+			serialized = probe.toByteArray();
+			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
-		this.leftMiddle = probe;
-		index++;
-		
-		probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-		probe = new FingerprintTemplate(
-			    new FingerprintImage()
-			        .dpi(500)
-			        .decode(probeImage));
+			this.leftMiddle = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+			
+			serialized = probe.toByteArray();
+			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
-		this.leftRing = probe;
-		index++;
-		
-		probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-		probe = new FingerprintTemplate(
-			    new FingerprintImage()
-			        .dpi(500)
-			        .decode(probeImage));
+			this.leftRing = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+			
+			serialized = probe.toByteArray();
+			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
-		this.leftThumb = probe;
-		index++;
-		
-		probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-		probe = new FingerprintTemplate(
-			    new FingerprintImage()
-			        .dpi(500)
-			        .decode(probeImage));
+			this.leftThumb = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+			
+			serialized = probe.toByteArray();
+			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
-		this.rightIndex = probe;
-		index++;
-		
-		probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-		probe = new FingerprintTemplate(
-			    new FingerprintImage()
-			        .dpi(500)
-			        .decode(probeImage));
+			this.rightIndex = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+			
+			serialized = probe.toByteArray();
+			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
-		this.rightLittle = probe;
-		index++;
-		
-		probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-		probe = new FingerprintTemplate(
-			    new FingerprintImage()
-			        .dpi(500)
-			        .decode(probeImage));
+			this.rightLittle = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+			
+			serialized = probe.toByteArray();
+			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
-		this.rightMiddle = probe;
-		index++;
-		
-		probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-		probe = new FingerprintTemplate(
-			    new FingerprintImage()
-			        .dpi(500)
-			        .decode(probeImage));
+			this.rightMiddle = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+			
+			serialized = probe.toByteArray();
+			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
-		this.rightRing = probe;
-		index++;
-		
-		probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-		probe = new FingerprintTemplate(
-			    new FingerprintImage()
-			        .dpi(500)
-			        .decode(probeImage));
+			this.rightRing = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+			
+			serialized = probe.toByteArray();
+			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
-		this.rightThumb = probe;
-		index++;
+			this.rightThumb = probe;
+			index++;
+		}
+		else 
+		{
+			byte[] probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			FingerprintTemplate probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+
+			this.leftIndex = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+
+			this.leftLittle = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+
+			this.leftMiddle = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+
+			this.leftRing = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+
+			this.leftThumb = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+
+			this.rightIndex = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+
+			this.rightLittle = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+
+			this.rightMiddle = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+
+			this.rightRing = probe;
+			index++;
+			
+			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
+			probe = new FingerprintTemplate(
+				    new FingerprintImage()
+				        .dpi(500)
+				        .decode(probeImage));
+
+			this.rightThumb = probe;
+			index++;
+		}
 	}
 }

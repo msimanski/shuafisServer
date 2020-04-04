@@ -25,10 +25,10 @@ public class SpringBootUploadFilesApplication implements CommandLineRunner
 
 	public static void main(String[] args)
 	{
-		loadLocalPrints();
-		Iterable<Profile> temp = canidates;
-		System.out.println(Query.compareOneToN(canidates.get(0).prints.leftIndex, temp));
-		SpringApplication.run(SpringBootUploadFilesApplication.class, args);
+		loadRawPrints(true);
+//		Iterable<Profile> temp = canidates;
+//		System.out.println(Query.compareOneToN(canidates.get(0).prints.leftIndex, temp));
+//		SpringApplication.run(SpringBootUploadFilesApplication.class, args);
 	}
 
 	@Override
@@ -38,17 +38,17 @@ public class SpringBootUploadFilesApplication implements CommandLineRunner
 		storageService.init();
 	}
 
-	public static void loadLocalPrints()
+	public static void loadRawPrints(boolean cache)
 	{
 		canidates = new ArrayList<Profile>();
 		Profile.initializeProfiles(canidates);
 		ArrayList<String> pathArrayList = new ArrayList<String>();
 
 		// Before starting the server, load the prints into memory
-		System.out.println("[INFO]: Loading local prints into memory. This will take a long time.");
+		System.out.println("[INFO]: Loading raw prints into memory. This will take a long time.");
 
 		try (Stream<Path> paths = Files
-				.walk(Paths.get("/Users/michaelsimanski/eclipse-workspace/shuafisServer/prints")))
+				.walk(Paths.get("/Users/michaelsimanski/eclipse-workspace/shuafisServer/prints/")))
 		{
 			paths.filter(Files::isRegularFile).forEach(path ->
 			{
@@ -63,7 +63,7 @@ public class SpringBootUploadFilesApplication implements CommandLineRunner
 		pathArrayList.sort(String::compareToIgnoreCase);
 		try
 		{
-			Profile.loadPrintsToMemory(canidates, pathArrayList);
+			Profile.loadPrintsToMemory(canidates, pathArrayList, cache);
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block

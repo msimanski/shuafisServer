@@ -15,21 +15,21 @@ public class Profile
 	String ssid;
 	Prints prints;
 	
-	public static void loadPrintsToMemory(ArrayList<Profile> canidates, ArrayList<String> pathArrayList) throws IOException 
+	public static void loadPrintsToMemory(ArrayList<Profile> canidates, ArrayList<String> pathArrayList, boolean cache) throws IOException 
 	{
 		int index = 0;
 		
 		for (int i = 0; i < canidates.size(); i++)
 		{
 			System.out.println("[INFO]: Loading profile #" + (i +1));
-			canidates.get(i).prints.loadTemplatesToMemory(index, pathArrayList);
+			canidates.get(i).prints.loadTemplatesToMemory(index, pathArrayList, cache);
 			index += 10;
 		}
 	}
 	
 	public static void initializeProfiles(ArrayList<Profile> canidates) 
 	{
-		for (int i = 0; i < 10; i++)
+		for (int i = 0; i < 600; i++)
 		{
 			canidates.add(new Profile());
 			canidates.get(i).prints = new Prints();
