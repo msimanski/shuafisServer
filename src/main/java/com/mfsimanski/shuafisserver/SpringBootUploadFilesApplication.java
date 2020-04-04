@@ -25,10 +25,10 @@ public class SpringBootUploadFilesApplication implements CommandLineRunner
 
 	public static void main(String[] args)
 	{
-		loadRawPrints(true);
+		loadPrints(true, true);
 //		Iterable<Profile> temp = canidates;
 //		System.out.println(Query.compareOneToN(canidates.get(0).prints.leftIndex, temp));
-//		SpringApplication.run(SpringBootUploadFilesApplication.class, args);
+		SpringApplication.run(SpringBootUploadFilesApplication.class, args);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class SpringBootUploadFilesApplication implements CommandLineRunner
 		storageService.init();
 	}
 
-	public static void loadRawPrints(boolean cache)
+	public static void loadPrints(boolean cache, boolean loadFromCache)
 	{
 		canidates = new ArrayList<Profile>();
 		Profile.initializeProfiles(canidates);
@@ -63,7 +63,7 @@ public class SpringBootUploadFilesApplication implements CommandLineRunner
 		pathArrayList.sort(String::compareToIgnoreCase);
 		try
 		{
-			Profile.loadPrintsToMemory(canidates, pathArrayList, cache);
+			Profile.loadPrintsToMemory(canidates, pathArrayList, cache, loadFromCache);
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block

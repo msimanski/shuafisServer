@@ -54,7 +54,7 @@ public class Prints
 		return dummy;
 	}
 	
-	public void loadTemplatesToMemory(int index, ArrayList<String> pathArrayList, boolean cache) throws IOException 
+	public void loadTemplatesFromImage(int index, ArrayList<String> pathArrayList, boolean cache) throws IOException 
 	{
 		if (cache)
 		{
@@ -272,5 +272,40 @@ public class Prints
 			this.rightThumb = probe;
 			index++;
 		}
+	}
+	
+	public void loadTemplatesFromCache(int index, ArrayList<String> pathArrayList) throws IOException 
+	{
+		String directory = Paths.get(pathArrayList.get(index)).getParent().toString();
+		
+		this.leftIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		index++;
+
+		this.leftLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		index++;
+
+		this.leftMiddle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		index++;
+
+		this.leftRing = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		index++;
+
+		this.leftThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		index++;
+
+		this.rightIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		index++;
+
+		this.rightLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		index++;
+
+		this.rightMiddle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		index++;
+
+		this.rightRing = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		index++;
+
+		this.rightThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		index++;
 	}
 }
