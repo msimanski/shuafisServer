@@ -17,78 +17,101 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import com.mfsimanski.shuafisserver.Query;
 import com.mfsimanski.shuafisserver.model.FileInfo;
 import com.mfsimanski.shuafisserver.model.ResponseMessage;
 import com.mfsimanski.shuafisserver.service.FilesStorageService;
 
-
-
 @Controller
 @CrossOrigin("http://localhost:2908")
-public class FilesController {
+public class FilesController
+{
 
-  @Autowired
-  FilesStorageService storageService;
+	@Autowired
+	FilesStorageService storageService;
 
-  @PostMapping("/upload")
-  public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file) {
+	@PostMapping("/upload")
+	public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file)
+	{
+		String message = "";
+		try
+		{
+			storageService.save(file);
+
+			message = "Uploaded the file successfully: " + file.getOriginalFilename();
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		} catch (Exception e)
+		{
+			message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+		}
+	}
+
+	@PostMapping("/comparenton")
+  public ResponseEntity<ResponseMessage> compareNToN(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2) {
     String message = "";
     try {
-      storageService.save(file);
+      // canidate
+      storageService.save(file1);
+      // probe
+      storageService.save(file2);
+      
+      boolean result = Query.compareNToN(40, file1.getBytes(), file2.getBytes());
+      
+      if (result)
+      {
+		message = "The specefied samples are within ident threshold.";
+      }
+      else 
+      {
+		message = "The specefied samples are NOT within ident threshold.";
+      }
 
-      message = "Uploaded the file successfully: " + file.getOriginalFilename();
       return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
     } catch (Exception e) {
-      message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+      message = "Could not upload the files! " + e.toString();
       return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
     }
   }
-  
-  @PostMapping("/comparenton")
-  public ResponseEntity<ResponseMessage> compareNToN(@RequestParam("file") MultipartFile file) {
-    String message = "";
-    try {
-      storageService.save(file);
 
-      message = "Uploaded the file successfully: " + file.getOriginalFilename();
-      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-    } catch (Exception e) {
-      message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-    }
-  }
-  
-  @PostMapping("/compareoneton")
-  public ResponseEntity<ResponseMessage> compareOneToN(@RequestParam("file") MultipartFile file) {
-    String message = "";
-    try {
-      storageService.save(file);
+	@PostMapping("/compareoneton")
+	public ResponseEntity<ResponseMessage> compareOneToN(@RequestParam("file") MultipartFile file)
+	{
+		String message = "";
+		try
+		{
+			storageService.save(file);
 
-      message = "Uploaded the file successfully: " + file.getOriginalFilename();
-      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-    } catch (Exception e) {
-      message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-    }
-  }
+			message = "Uploaded the file successfully: " + file.getOriginalFilename();
+			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+		} catch (Exception e)
+		{
+			message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+		}
+	}
 
-  @GetMapping("/files")
-  public ResponseEntity<List<FileInfo>> getListFiles() {
-    List<FileInfo> fileInfos = storageService.loadAll().map(path -> {
-      String filename = path.getFileName().toString();
-      String url = MvcUriComponentsBuilder
-          .fromMethodName(FilesController.class, "getFile", path.getFileName().toString()).build().toString();
+	@GetMapping("/files")
+	public ResponseEntity<List<FileInfo>> getListFiles()
+	{
+		List<FileInfo> fileInfos = storageService.loadAll().map(path ->
+		{
+			String filename = path.getFileName().toString();
+			String url = MvcUriComponentsBuilder
+					.fromMethodName(FilesController.class, "getFile", path.getFileName().toString()).build().toString();
 
-      return new FileInfo(filename, url);
-    }).collect(Collectors.toList());
+			return new FileInfo(filename, url);
+		}).collect(Collectors.toList());
 
-    return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
-  }
+		return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
+	}
 
-  @GetMapping("/files/{filename:.+}")
-  public ResponseEntity<Resource> getFile(@PathVariable String filename) {
-    Resource file = storageService.load(filename);
-    return ResponseEntity.ok()
-        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"").body(file);
-  }
+	@GetMapping("/files/{filename:.+}")
+	public ResponseEntity<Resource> getFile(@PathVariable String filename)
+	{
+		Resource file = storageService.load(filename);
+		return ResponseEntity.ok()
+				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+				.body(file);
+	}
 }

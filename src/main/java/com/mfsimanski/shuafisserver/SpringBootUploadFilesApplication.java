@@ -25,7 +25,7 @@ public class SpringBootUploadFilesApplication implements CommandLineRunner
 
 	public static void main(String[] args)
 	{
-		loadPrints(true, true);
+		loadPrints(false, true);
 //		Iterable<Profile> temp = canidates;
 //		System.out.println(Query.compareOneToN(canidates.get(0).prints.leftIndex, temp));
 		SpringApplication.run(SpringBootUploadFilesApplication.class, args);
@@ -45,7 +45,7 @@ public class SpringBootUploadFilesApplication implements CommandLineRunner
 		ArrayList<String> pathArrayList = new ArrayList<String>();
 
 		// Before starting the server, load the prints into memory
-		System.out.println("[INFO]: Loading raw prints into memory. This will take a long time.");
+		System.out.println("[INFO]: Loading prints into memory. This will take a long time.");
 
 		try (Stream<Path> paths = Files
 				.walk(Paths.get("/Users/michaelsimanski/eclipse-workspace/shuafisServer/prints/")))
