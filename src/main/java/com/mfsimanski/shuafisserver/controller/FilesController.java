@@ -1,6 +1,8 @@
 package com.mfsimanski.shuafisserver.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.json.JSONObject;
@@ -31,25 +33,25 @@ public class FilesController
 	@Autowired
 	FilesStorageService storageService;
 
-	@PostMapping("/upload")
-	public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file)
-	{
-		String message = "";
-		try
-		{
-			storageService.save(file);
-
-			message = "Uploaded the file successfully: " + file.getOriginalFilename();
-			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-		} catch (Exception e)
-		{
-			message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-		}
-	}
+//	@PostMapping("/upload")
+//	public ResponseEntity<ResponseMessage> uploadFile(@RequestParam("file") MultipartFile file)
+//	{
+//		String message = "";
+//		try
+//		{
+//			storageService.save(file);
+//
+//			message = "Uploaded the file successfully: " + file.getOriginalFilename();
+//			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+//		} catch (Exception e)
+//		{
+//			message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+//			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+//		}
+//	}
 
 	@PostMapping("/comparenton")
-  public ResponseEntity<ResponseMessage> compareNToN(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2) {
+  public ResponseEntity<Map<String, String>> compareNToN(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2) {
     String message = "";
     try {
       // canidate
@@ -57,31 +59,34 @@ public class FilesController
       // probe
       storageService.save(file2);
       
-      JSONObject result = Query.compareNToN(40, file1.getBytes(), file2.getBytes());
+      Map<String, String> result = Query.compareNToN(40, file1.getBytes(), file2.getBytes());
 
-      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(result.toString()));
+      return ResponseEntity.status(HttpStatus.OK).body(result);
     } catch (Exception e) {
       message = "Could not upload the files! " + e.toString();
-      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+      HashMap<String, String> temp = new HashMap<String, String>();
+      temp.put("message", message);
+      Map<String, String> r = temp;
+      return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(r);
     }
   }
 
-	@PostMapping("/compareoneton")
-	public ResponseEntity<ResponseMessage> compareOneToN(@RequestParam("file") MultipartFile file)
-	{
-		String message = "";
-		try
-		{
-			storageService.save(file);
-
-			message = "Uploaded the file successfully: " + file.getOriginalFilename();
-			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
-		} catch (Exception e)
-		{
-			message = "Could not upload the file: " + file.getOriginalFilename() + "!";
-			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
-		}
-	}
+//	@PostMapping("/compareoneton")
+//	public ResponseEntity<ResponseMessage> compareOneToN(@RequestParam("file") MultipartFile file)
+//	{
+//		String message = "";
+//		try
+//		{
+//			storageService.save(file);
+//
+//			message = "Uploaded the file successfully: " + file.getOriginalFilename();
+//			return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+//		} catch (Exception e)
+//		{
+//			message = "Could not upload the file: " + file.getOriginalFilename() + "!";
+//			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+//		}
+//	}
 
 	@GetMapping("/files")
 	public ResponseEntity<List<FileInfo>> getListFiles()

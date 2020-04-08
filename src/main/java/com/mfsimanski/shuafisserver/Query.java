@@ -1,5 +1,8 @@
 package com.mfsimanski.shuafisserver;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.json.JSONObject;
 
 import com.machinezoo.sourceafis.FingerprintImage;
@@ -7,38 +10,8 @@ import com.machinezoo.sourceafis.FingerprintMatcher;
 import com.machinezoo.sourceafis.FingerprintTemplate;
 
 public class Query
-{
-	public static boolean compareNToN(int threshold, byte[] probeImage, byte[] canidateImage, boolean[] fingers) 
-	{
-		// Fingers goes:
-		// Left index	0
-		// Left little	1
-		// Left middle	2
-		// Left ring	3
-		// Left thumb	4
-		// Right index	5
-		// Right little	6
-		// Right middle	7
-		// Right ring	8
-		// Right thumb	9
-		
-		FingerprintTemplate probe = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(probeImage));
-
-		FingerprintTemplate candidate = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(canidateImage));
-		
-		double score = new FingerprintMatcher().index(probe).match(candidate);
-		
-		if (score >= threshold)
-		{
-			return true;
-		}
-		else 
-		{
-			return false;
-		}
-	}
-	
-	public static JSONObject compareNToN(int threshold, byte[] probeImage, byte[] canidateImage) 
+{	
+	public static Map<String, String> compareNToN(int threshold, byte[] probeImage, byte[] canidateImage) 
 	{
 		// Fingers goes:
 		// Left index	0
@@ -55,25 +28,26 @@ public class Query
 		FingerprintTemplate probe = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(probeImage));
 		FingerprintTemplate candidate = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(canidateImage));
 		
-		JSONObject results = new JSONObject();
+		HashMap<String, String> results = new HashMap<String,String>();
 		
-		long startTime = System.currentTimeMillis();
+		double startTime = System.currentTimeMillis();
 		double score = new FingerprintMatcher().index(probe).match(candidate);
-		long stopTime = System.currentTimeMillis();
-		long timeResult = stopTime - startTime;
+		double stopTime = System.currentTimeMillis();
+		double timeResult = stopTime - startTime;
 		
 		if (score >= threshold)
 		{
-			results.put("ident", true);
+			results.put("ident", "true");
 		}
 		else 
 		{
-			results.put("ident", false);
+			results.put("ident", "false");
 		}
-		results.put("score", score);
-		results.put("time", timeResult);
+		results.put("score", Double.toString(score));
+		results.put("time", Double.toString(timeResult));
 		
-		return results;
+		Map<String, String> iHateInterfaces = results;
+		return iHateInterfaces;
 	}
 
 	public static Profile compareOneToN(FingerprintTemplate probe, Iterable<Profile> candidates)
