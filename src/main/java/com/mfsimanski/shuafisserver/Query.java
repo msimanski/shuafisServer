@@ -1,5 +1,7 @@
 package com.mfsimanski.shuafisserver;
 
+import org.json.JSONObject;
+
 import com.machinezoo.sourceafis.FingerprintImage;
 import com.machinezoo.sourceafis.FingerprintMatcher;
 import com.machinezoo.sourceafis.FingerprintTemplate;
@@ -36,7 +38,7 @@ public class Query
 		}
 	}
 	
-	public static boolean compareNToN(int threshold, byte[] probeImage, byte[] canidateImage) 
+	public static JSONObject compareNToN(int threshold, byte[] probeImage, byte[] canidateImage) 
 	{
 		// Fingers goes:
 		// Left index	0
@@ -51,19 +53,27 @@ public class Query
 		// Right thumb	9
 		
 		FingerprintTemplate probe = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(probeImage));
-
 		FingerprintTemplate candidate = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(canidateImage));
 		
+		JSONObject results = new JSONObject();
+		
+		long startTime = System.currentTimeMillis();
 		double score = new FingerprintMatcher().index(probe).match(candidate);
+		long stopTime = System.currentTimeMillis();
+		long timeResult = stopTime - startTime;
 		
 		if (score >= threshold)
 		{
-			return true;
+			results.put("ident", true);
 		}
 		else 
 		{
-			return false;
+			results.put("ident", false);
 		}
+		results.put("score", score);
+		results.put("time", timeResult);
+		
+		return results;
 	}
 
 	public static Profile compareOneToN(FingerprintTemplate probe, Iterable<Profile> candidates)

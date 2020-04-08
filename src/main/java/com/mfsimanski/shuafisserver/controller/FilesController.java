@@ -3,6 +3,7 @@ package com.mfsimanski.shuafisserver.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -56,18 +57,9 @@ public class FilesController
       // probe
       storageService.save(file2);
       
-      boolean result = Query.compareNToN(40, file1.getBytes(), file2.getBytes());
-      
-      if (result)
-      {
-		message = "The specefied samples are within ident threshold.";
-      }
-      else 
-      {
-		message = "The specefied samples are NOT within ident threshold.";
-      }
+      JSONObject result = Query.compareNToN(40, file1.getBytes(), file2.getBytes());
 
-      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+      return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(result.toString()));
     } catch (Exception e) {
       message = "Could not upload the files! " + e.toString();
       return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
