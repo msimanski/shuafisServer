@@ -3,15 +3,20 @@ package com.mfsimanski.shuafisserver;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONObject;
-
 import com.machinezoo.sourceafis.FingerprintImage;
 import com.machinezoo.sourceafis.FingerprintMatcher;
 import com.machinezoo.sourceafis.FingerprintTemplate;
+import com.mfsimanski.shuafisserver.model.Profile;
 
 public class Query
 {	
-	public static Map<String, String> compareNToN(int threshold, byte[] probeImage, byte[] canidateImage) 
+	/**
+	 * @param threshold
+	 * @param probeImage
+	 * @param canidateImage
+	 * @return
+	 */
+	public static Map<String, Object> compareNToN(int threshold, byte[] probeImage, byte[] canidateImage) 
 	{
 		// Fingers goes:
 		// Left index	0
@@ -28,7 +33,7 @@ public class Query
 		FingerprintTemplate probe = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(probeImage));
 		FingerprintTemplate candidate = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(canidateImage));
 		
-		HashMap<String, String> results = new HashMap<String,String>();
+		HashMap<String, Object> results = new HashMap<String, Object>();
 		
 		double startTime = System.currentTimeMillis();
 		double score = new FingerprintMatcher().index(probe).match(candidate);
@@ -37,24 +42,33 @@ public class Query
 		
 		if (score >= threshold)
 		{
-			results.put("ident", "true");
+			results.put("ident", true);
 		}
 		else 
 		{
-			results.put("ident", "false");
+			results.put("ident", false);
 		}
-		results.put("score", Double.toString(score));
-		results.put("time", Double.toString(timeResult));
+		results.put("score", score);
+		results.put("time", timeResult);
 		
-		Map<String, String> iHateInterfaces = results;
+		Map<String, Object> iHateInterfaces = results;
 		return iHateInterfaces;
 	}
 
-	public static Profile compareOneToN(FingerprintTemplate probe, Iterable<Profile> candidates)
+	/**
+	 * @param probeRaw
+	 * @param candidates
+	 * @return
+	 */
+	public static Map<String, Object> compareOneToN(byte[] probeRaw, Iterable<Profile> candidates)
 	{
+		FingerprintTemplate probe = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(probeRaw));
 		FingerprintMatcher matcher = new FingerprintMatcher().index(probe);
 		Profile match = null;
 		double high = 0;
+		
+		double startTime = System.currentTimeMillis();
+		
 		for (Profile candidate : candidates)
 		{
 			for(FingerprintTemplate template : candidate.prints.getIterableOfPrints())
@@ -68,6 +82,48 @@ public class Query
 			}
 		}
 		double threshold = 40;
-		return high >= threshold ? match : null;
+		Profile possibleMatch = (high >= threshold) ? match : null;
+		
+		double stopTime = System.currentTimeMillis();
+		double timeResult = stopTime - startTime;
+		
+		if (possibleMatch != null)
+		{
+			HashMap<String, Object> tempMap = new HashMap<String, Object>();
+			tempMap.put("ident", true);
+			tempMap.put("message", "Profile found within ident threshold.");
+			tempMap.put("time", Double.toString(timeResult));
+			tempMap.putAll(mapifyProfile(possibleMatch));
+			Map<String, Object> iHateInterfaces = tempMap;
+			return iHateInterfaces;
+		}
+		else
+		{
+			HashMap<String, Object> tempMap = new HashMap<String, Object>();
+			tempMap.put("ident", false);
+			tempMap.put("message", "No profile found within ident threshold.");
+			Map<String, Object> iHateInterfaces = tempMap;
+			return iHateInterfaces;
+		}
+	}
+	
+	/**
+	 * @param toBeMapified
+	 * @return
+	 */
+	private static Map<String, Object> mapifyProfile(Profile toBeMapified) 
+	{
+		HashMap<String, Object> tempMap = new HashMap<String, Object>();
+		tempMap.put("id", toBeMapified.id);
+		tempMap.put("name", toBeMapified.name);
+		tempMap.put("address", toBeMapified.address);
+		tempMap.put("city", toBeMapified.city);
+		tempMap.put("state", toBeMapified.state);
+		tempMap.put("zip", toBeMapified.zip);
+		tempMap.put("phone", toBeMapified.phone);
+		tempMap.put("ssid", toBeMapified.ssid);
+		
+		Map<String, Object> iHateInterfaces = tempMap;
+		return iHateInterfaces;
 	}
 }

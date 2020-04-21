@@ -34,6 +34,9 @@ public class Prints
 	FingerprintTemplate rightRing;
 	FingerprintTemplate rightThumb;
 	
+	/**
+	 * @return
+	 */
 	public Iterable<FingerprintTemplate> getIterableOfPrints()
 	{
 		ArrayList<FingerprintTemplate> temp = new ArrayList<FingerprintTemplate>();
@@ -54,6 +57,12 @@ public class Prints
 		return dummy;
 	}
 	
+	/**
+	 * @param index
+	 * @param pathArrayList
+	 * @param cache
+	 * @throws IOException
+	 */
 	public void loadTemplatesFromImage(int index, ArrayList<String> pathArrayList, boolean cache) throws IOException 
 	{
 		if (cache)
@@ -274,6 +283,11 @@ public class Prints
 		}
 	}
 	
+	/**
+	 * @param index
+	 * @param pathArrayList
+	 * @throws IOException
+	 */
 	public void loadTemplatesFromCache(int index, ArrayList<String> pathArrayList) throws IOException 
 	{
 		String directory = Paths.get(pathArrayList.get(index)).getParent().toString();
