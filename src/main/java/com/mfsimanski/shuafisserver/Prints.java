@@ -75,7 +75,7 @@ public class Prints
 			
 			// This snippet saves it to a compressed format for faster load times
 			byte[] serialized = probe.toByteArray();
-			String directory = Paths.get(pathArrayList.get(index)).getParent().toString();
+			String directory = Paths.get(pathArrayList.get(index)).getParent().getParent().toString();
 			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
 
 			this.leftIndex = probe;
@@ -290,36 +290,36 @@ public class Prints
 	 */
 	public void loadTemplatesFromCache(int index, ArrayList<String> pathArrayList) throws IOException 
 	{
-		String directory = Paths.get(pathArrayList.get(index)).getParent().toString();
+		String directory = Paths.get("").toString();
 		
-		this.leftIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		this.leftIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
 		index++;
 
-		this.leftLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		this.leftLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
 		index++;
 
-		this.leftMiddle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		this.leftMiddle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
 		index++;
 
-		this.leftRing = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		this.leftRing = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
 		index++;
 
-		this.leftThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		this.leftThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
 		index++;
 
-		this.rightIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		this.rightIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
 		index++;
 
-		this.rightLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		this.rightLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
 		index++;
 
-		this.rightMiddle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		this.rightMiddle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
 		index++;
 
-		this.rightRing = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		this.rightRing = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
 		index++;
 
-		this.rightThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz")));
+		this.rightThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
 		index++;
 	}
 }
