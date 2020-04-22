@@ -30,6 +30,8 @@ public class Utility
 	 */
 	public static void cacheTencardImages(File directory) throws IOException 
 	{
+		System.out.println(LocalDateTime.now() + " [INFO]: Encaching directory " + directory.getAbsolutePath() + ".");
+		
 		// Array containing all files in the directory
 		File[] listOfFiles = directory.listFiles();
 		
@@ -40,6 +42,7 @@ public class Utility
 		// Iterate through each file in directory. Load each file into memory and encode, then compress.
 		for (File file : listOfFiles) 
 		{
+			System.out.println(LocalDateTime.now() + " [INFO]: Encaching file " + file.getAbsolutePath() + ".");
 			byte[] probeImage = Files.readAllBytes(Paths.get(file.getAbsolutePath()));
 			FingerprintTemplate probe = new FingerprintTemplate(
 				    new FingerprintImage()
@@ -59,6 +62,7 @@ public class Utility
 	 */
 	public static void encacheAllPrintsDirectories() throws IOException 
 	{
+		System.out.println(LocalDateTime.now() + " [INFO]: Encaching all directories in /prints. This is an extremely expensive operation, so it will take some time.");
 		File printsDirectory = new File("prints/");
 		// Array containing all directories in the directory
 		File[] listOfFiles = printsDirectory.listFiles(File::isDirectory);
@@ -71,48 +75,48 @@ public class Utility
 		}
 	}
 	
-	/**
-	 * @throws IOException 
-	 * 
-	 */
-	public static void encapsulatePrintsInDirectory() throws IOException 
-	{
-		//ArrayList<Profile> canidates = new ArrayList<Profile>(SHUAFISMain.canidates);
-		//Iterable<Profile> iterable = canidates;
-		
-//		for (Profile profile : iterable) 
-//		{
-			//Path dir = Paths.get("prints/" + Integer.toString(profile.id));
-			//Files.createDirectory(dir);
-			
-			File folder = new File("prints/");
-			File[] listOfFiles = folder.listFiles();
-			Arrays.sort(listOfFiles);
-			
-			ArrayList<File[]> fubar = new ArrayList<File[]>();
-			for (int i = 0; i < 6000; i += 10) 
-			{
-				fubar.add(Arrays.copyOfRange(listOfFiles, i, i + 10));
-			}
-			
-			int foo = 0;
-			
-			for (File[] file : fubar) 
-			{
-				File dest = new File("prints/" + Integer.toString(foo + 1));
-				foo++;
-				for (File unit : file) 
-				{
-					File source = new File(unit.getAbsolutePath());
-					
-					try {
-					    FileUtils.copyFileToDirectory(source, dest);
-					} catch (IOException e) {
-					    e.printStackTrace();
-					}
-				}
-			}
-	}
+//	/**
+//	 * @throws IOException 
+//	 * 
+//	 */
+//	public static void encapsulatePrintsInDirectory() throws IOException 
+//	{
+//		//ArrayList<Profile> canidates = new ArrayList<Profile>(SHUAFISMain.canidates);
+//		//Iterable<Profile> iterable = canidates;
+//		
+////		for (Profile profile : iterable) 
+////		{
+//			//Path dir = Paths.get("prints/" + Integer.toString(profile.id));
+//			//Files.createDirectory(dir);
+//			
+//			File folder = new File("prints/");
+//			File[] listOfFiles = folder.listFiles();
+//			Arrays.sort(listOfFiles);
+//			
+//			ArrayList<File[]> fubar = new ArrayList<File[]>();
+//			for (int i = 0; i < 6000; i += 10) 
+//			{
+//				fubar.add(Arrays.copyOfRange(listOfFiles, i, i + 10));
+//			}
+//			
+//			int foo = 0;
+//			
+//			for (File[] file : fubar) 
+//			{
+//				File dest = new File("prints/" + Integer.toString(foo + 1));
+//				foo++;
+//				for (File unit : file) 
+//				{
+//					File source = new File(unit.getAbsolutePath());
+//					
+//					try {
+//					    FileUtils.copyFileToDirectory(source, dest);
+//					} catch (IOException e) {
+//					    e.printStackTrace();
+//					}
+//				}
+//			}
+//	}
 			
 //			int iterate = 0;
 //			

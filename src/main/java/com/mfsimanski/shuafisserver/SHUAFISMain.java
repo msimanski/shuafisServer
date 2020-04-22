@@ -36,20 +36,12 @@ public class SHUAFISMain implements CommandLineRunner
 		Utility.throwBanner();
 		try
 		{
-			Utility.encapsulatePrintsInDirectory();
+			Utility.encacheAllPrintsDirectories();
 		} catch (IOException e)
 		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-//		try
-//		{
-//			Utility.encacheAllPrintsDirectories();
-//		} catch (IOException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		//SpringApplication.run(SHUAFISMain.class, args);
 	}
 
