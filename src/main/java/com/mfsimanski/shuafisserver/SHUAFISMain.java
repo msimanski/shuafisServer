@@ -1,6 +1,5 @@
 package com.mfsimanski.shuafisserver;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.annotation.Resource;
@@ -29,20 +28,13 @@ public class SHUAFISMain implements CommandLineRunner
 	@Autowired
 	DatabaseInitService databaseInitService;
 
-	public static ArrayList<Profile> canidates;
+	public static ArrayList<Profile> candidates;
 
 	public static void main(String[] args)
 	{	
 		Utility.throwBanner();
-		try
-		{
-			Utility.encacheAllPrintsDirectories();
-		} catch (IOException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		//SpringApplication.run(SHUAFISMain.class, args);
+		
+		SpringApplication.run(SHUAFISMain.class, args);
 	}
 
 	/* (non-Javadoc)
@@ -51,8 +43,12 @@ public class SHUAFISMain implements CommandLineRunner
 	@Override
 	public void run(String... arg) throws Exception
 	{
+		// Initialize candidates
+		candidates = new ArrayList<Profile>();
 		// storageService.deleteAll();
 		storageService.init();
 		
+		databaseInitService.loadCanidates();
+		Utility.associateAllPrints();
 	}
 }

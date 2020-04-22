@@ -1,5 +1,6 @@
 package com.mfsimanski.shuafisserver;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +61,7 @@ public class Query
 	 * @param candidates
 	 * @return
 	 */
-	public static Map<String, Object> compareOneToN(byte[] probeRaw, Iterable<Profile> candidates)
+	public static Map<String, Object> compareOneToN(byte[] probeRaw, ArrayList<Profile> candidates)
 	{
 		FingerprintTemplate probe = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(probeRaw));
 		FingerprintMatcher matcher = new FingerprintMatcher().index(probe);

@@ -1,6 +1,7 @@
 package com.mfsimanski.shuafisserver.utility;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -75,14 +76,56 @@ public class Utility
 		}
 	}
 	
+	/**
+	 * Associate given profile with cached prints found in /prints/profile.id/cache.
+	 * @param profile Profile to be associated.
+	 * @throws IOException If file or directory invalid:
+	 * @see IOException
+	 */
+	public static void associatePrintsWithProfile(Profile profile) throws IOException 
+	{
+		// Initialize prints.
+		profile.prints = new Prints();
+		
+		// Directory of cached files.
+		File temp = new File("prints/" + Integer.toString(profile.id) + "/cache");
+		File[] arrayOfFiles = temp.listFiles((dir, name) -> name.toLowerCase().endsWith(".gz"));
+		
+		profile.prints.leftIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[0].getAbsolutePath())));
+		profile.prints.leftLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[1].getAbsolutePath())));
+		profile.prints.leftMiddle = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[2].getAbsolutePath())));
+		profile.prints.leftRing = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[3].getAbsolutePath())));
+		profile.prints.leftThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[4].getAbsolutePath())));
+		profile.prints.rightIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[5].getAbsolutePath())));
+		profile.prints.rightLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[6].getAbsolutePath())));
+		profile.prints.rightMiddle = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[7].getAbsolutePath())));
+		profile.prints.rightRing = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[8].getAbsolutePath())));
+		profile.prints.rightThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[9].getAbsolutePath())));
+	}
+	
+	public static void associateAllPrints() 
+	{
+		for (Profile profile : SHUAFISMain.candidates) 
+		{
+			try
+			{
+				associatePrintsWithProfile(profile);
+			} catch (IOException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
 //	/**
 //	 * @throws IOException 
 //	 * 
 //	 */
 //	public static void encapsulatePrintsInDirectory() throws IOException 
 //	{
-//		//ArrayList<Profile> canidates = new ArrayList<Profile>(SHUAFISMain.canidates);
-//		//Iterable<Profile> iterable = canidates;
+//		//ArrayList<Profile> candidates = new ArrayList<Profile>(SHUAFISMain.candidates);
+//		//Iterable<Profile> iterable = candidates;
 //		
 ////		for (Profile profile : iterable) 
 ////		{
@@ -138,14 +181,14 @@ public class Utility
 		//}
 	
 //	/**
-//	 * @param canidates
+//	 * @param candidates
 //	 */
-//	public static void initializeProfiles(ArrayList<Profile> canidates) 
+//	public static void initializeProfiles(ArrayList<Profile> candidates) 
 //	{
 //		for (int i = 0; i < 600; i++)
 //		{
-//			canidates.add(new Profile(i + 1));
-//			canidates.get(i).prints = new Prints();
+//			candidates.add(new Profile(i + 1));
+//			candidates.get(i).prints = new Prints();
 //		}
 //	}
 //
@@ -155,8 +198,8 @@ public class Utility
 //	 */
 //	public static void loadPrints(boolean cache, boolean loadFromCache)
 //	{
-//		SHUAFISMain.canidates = new ArrayList<Profile>();
-//		initializeProfiles(SHUAFISMain.canidates);
+//		SHUAFISMain.candidates = new ArrayList<Profile>();
+//		initializeProfiles(SHUAFISMain.candidates);
 //		ArrayList<String> pathArrayList = new ArrayList<String>();
 //	
 //		// Before starting the server, load the prints into memory
@@ -177,7 +220,7 @@ public class Utility
 //		pathArrayList.sort(String::compareToIgnoreCase);
 //		try
 //		{
-//			Utility.loadPrintsToMemory(SHUAFISMain.canidates, pathArrayList, cache, loadFromCache);
+//			Utility.loadPrintsToMemory(SHUAFISMain.candidates, pathArrayList, cache, loadFromCache);
 //		} catch (IOException e)
 //		{
 //			e.printStackTrace();
@@ -185,27 +228,27 @@ public class Utility
 //	}
 //
 //	/**
-//	 * @param canidates
+//	 * @param candidates
 //	 * @param pathArrayList
 //	 * @param cache
 //	 * @param loadFromCache
 //	 * @throws IOException
 //	 */
-//	public static void loadPrintsToMemory(ArrayList<Profile> canidates, ArrayList<String> pathArrayList, boolean cache, boolean loadFromCache) throws IOException 
+//	public static void loadPrintsToMemory(ArrayList<Profile> candidates, ArrayList<String> pathArrayList, boolean cache, boolean loadFromCache) throws IOException 
 //	{
 //		int index = 0;
 //		
-//		for (int i = 0; i < canidates.size(); i++)
+//		for (int i = 0; i < candidates.size(); i++)
 //		{
 //			System.out.println(LocalDateTime.now() + " [INFO]: Loading profile #" + (i +1));
 //			
 //			if (loadFromCache) 
 //			{
-//				canidates.get(i).prints.loadTemplatesFromCache(index, pathArrayList);
+//				candidates.get(i).prints.loadTemplatesFromCache(index, pathArrayList);
 //			}
 //			else
 //			{
-//				canidates.get(i).prints.loadTemplatesFromImage(index, pathArrayList, cache);
+//				candidates.get(i).prints.loadTemplatesFromImage(index, pathArrayList, cache);
 //			}
 //			
 //			index += 10;

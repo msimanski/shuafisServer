@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -69,7 +70,7 @@ public class FilesController
 	    
 	    try 
 	    {
-	      // canidate
+	      // Candidate
 	      //storageService.save(file1);
 	      // probe
 	      //storageService.save(file2);
@@ -84,7 +85,7 @@ public class FilesController
 	    {
 	    	System.out.println(LocalDateTime.now() + " [ERROR]: N:N comparison failed.");
 	    	
-	    	message = "Could not upload the files! " + e.toString();
+	    	message = "Could not upload the files! " + e.getStackTrace();
 	    	HashMap<String, Object> temp = new HashMap<String, Object>();
 	    	temp.put("message", message);
 	    	Map<String, Object> r = temp;
@@ -106,17 +107,17 @@ public class FilesController
 		{
 			//storageService.save(file);
 
-			Map<String, Object> result = Query.compareOneToN(file.getBytes(), SHUAFISMain.canidates);
+			Map<String, Object> result = Query.compareOneToN(file.getBytes(), SHUAFISMain.candidates);
 			
-			System.out.println(LocalDateTime.now() + " [INFO]: N:N comparison request successful.");
+			System.out.println(LocalDateTime.now() + " [INFO]: 1:N comparison request successful.");
 			
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		} 
 		catch (Exception e)
 		{
-			System.out.println(LocalDateTime.now() + " [ERROR]: N:N comparison request failed.");
+			System.out.println(LocalDateTime.now() + " [ERROR]: 1:N comparison request failed.");
 			
-			message = "Could not upload the files! " + e.toString();
+			message = "Could not upload the files! " + ExceptionUtils.getStackTrace(e);
 		    HashMap<String, Object> temp = new HashMap<String, Object>();
 		    temp.put("message", message);
 		    Map<String, Object> r = temp;
