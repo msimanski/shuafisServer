@@ -17,7 +17,7 @@ public class Query
 	 * @param canidateImage
 	 * @return
 	 */
-	public static Map<String, Object> compareNToN(int threshold, byte[] probeImage, byte[] canidateImage) 
+	public static Map<String, Object> compareOneToOne(int threshold, byte[] probeImage, byte[] canidateImage) 
 	{
 		// Fingers goes:
 		// Left index	0

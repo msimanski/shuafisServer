@@ -23,33 +23,21 @@ public class Profile
 	public String zip;
 	public String phone;
 	public String ssid;
-	
+	public String dob;
+
 	@Transient
 	public Prints prints;
+
+	public String getDob()
+	{
+		return dob;
+	}
+
+	public void setDob(String dob)
+	{
+		this.dob = dob;
+	}
 	
-	public Profile(int id) 
-	{
-		this.id = id;
-		this.name = "default";
-		this.address = "default";
-		this.city = "default";
-		this.state = "default";
-		this.zip = "default";
-		this.phone = "default";
-		this.ssid = "### ## ####";
-	}
-
-	public Profile()
-	{
-		this.name = "default";
-		this.address = "default";
-		this.city = "default";
-		this.state = "default";
-		this.zip = "default";
-		this.phone = "default";
-		this.ssid = "### ## ####";
-	}
-
 	public int getId()
 	{
 		return id;

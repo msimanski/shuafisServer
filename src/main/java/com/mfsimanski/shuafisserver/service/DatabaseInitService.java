@@ -1,8 +1,9 @@
 package com.mfsimanski.shuafisserver.service;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Locale;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class DatabaseInitService
 			temp.setZip(profile.getZip());
 			temp.setPhone(profile.getPhone());
 			temp.setSsid(profile.getSsid());
+			temp.setDob(profile.getDob());
 			SHUAFISMain.candidates.add(temp);
 			System.out.println(LocalDateTime.now() + " [INFO]: Retrived profile ID: " + temp.getId() + ".");
 		}

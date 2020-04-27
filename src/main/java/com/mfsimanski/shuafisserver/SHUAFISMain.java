@@ -43,6 +43,11 @@ public class SHUAFISMain implements CommandLineRunner
 	@Override
 	public void run(String... arg) throws Exception
 	{
+		bootProcess();
+	}
+	
+	private void bootProcess() 
+	{
 		// Initialize candidates
 		candidates = new ArrayList<Profile>();
 		// storageService.deleteAll();

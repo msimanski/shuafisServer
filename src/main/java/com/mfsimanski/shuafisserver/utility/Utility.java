@@ -3,6 +3,7 @@ package com.mfsimanski.shuafisserver.utility;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,6 +13,8 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.machinezoo.sourceafis.FingerprintImage;
 import com.machinezoo.sourceafis.FingerprintTemplate;
@@ -54,6 +57,70 @@ public class Utility
 			byte[] serialized = probe.toByteArray();
 			Files.write(Paths.get(newDirectory.getAbsolutePath() + "/" + file.getName() + ".json.gz"), serialized);
 		}
+	}
+	
+	/**
+	 * Saves supplied tencard files to a directory named the same as the id.
+	 * @param id
+	 * @param leftLittleFile
+	 * @param leftRingFile
+	 * @param leftMiddleFile
+	 * @param leftIndexFile
+	 * @param leftThumbFile
+	 * @param rightLittleFile
+	 * @param rightRingFile
+	 * @param rightMiddleFile
+	 * @param rightIndexFile
+	 * @param rightThumbFile
+	 */
+	public static void saveNewTencardImages(
+			int id,
+			MultipartFile leftLittleFile,
+			MultipartFile leftRingFile,
+			MultipartFile leftMiddleFile,
+			MultipartFile leftIndexFile,
+			MultipartFile leftThumbFile,
+			MultipartFile rightLittleFile,
+			MultipartFile rightRingFile,
+			MultipartFile rightMiddleFile,
+			MultipartFile rightIndexFile,
+			MultipartFile rightThumbFile) throws IOException
+	{
+		// Make a new folder with the ID of the new instance.
+		File newDirectory = new File("prints/" + id);
+		newDirectory.mkdir();
+		
+		// Save the files.
+		Path filepath = Paths.get(newDirectory.getAbsolutePath(), leftIndexFile.getOriginalFilename());
+	    OutputStream os = Files.newOutputStream(filepath);
+	    os.write(leftIndexFile.getBytes());
+	    filepath = Paths.get(newDirectory.getAbsolutePath(), leftLittleFile.getOriginalFilename());
+	    os = Files.newOutputStream(filepath);
+	    os.write(leftLittleFile.getBytes());
+	    filepath = Paths.get(newDirectory.getAbsolutePath(), leftMiddleFile.getOriginalFilename());
+	    os = Files.newOutputStream(filepath);
+	    os.write(leftMiddleFile.getBytes());
+	    filepath = Paths.get(newDirectory.getAbsolutePath(), leftRingFile.getOriginalFilename());
+	    os = Files.newOutputStream(filepath);
+	    os.write(leftRingFile.getBytes());
+	    filepath = Paths.get(newDirectory.getAbsolutePath(), leftThumbFile.getOriginalFilename());
+	    os = Files.newOutputStream(filepath);
+	    os.write(leftThumbFile.getBytes());
+	    filepath = Paths.get(newDirectory.getAbsolutePath(), rightIndexFile.getOriginalFilename());
+	    os = Files.newOutputStream(filepath);
+	    os.write(rightIndexFile.getBytes());
+	    filepath = Paths.get(newDirectory.getAbsolutePath(), rightLittleFile.getOriginalFilename());
+	    os = Files.newOutputStream(filepath);
+	    os.write(rightLittleFile.getBytes());
+	    filepath = Paths.get(newDirectory.getAbsolutePath(), rightMiddleFile.getOriginalFilename());
+	    os = Files.newOutputStream(filepath);
+	    os.write(rightMiddleFile.getBytes());
+	    filepath = Paths.get(newDirectory.getAbsolutePath(), rightRingFile.getOriginalFilename());
+	    os = Files.newOutputStream(filepath);
+	    os.write(rightRingFile.getBytes());
+	    filepath = Paths.get(newDirectory.getAbsolutePath(), rightThumbFile.getOriginalFilename());
+	    os = Files.newOutputStream(filepath);
+	    os.write(rightThumbFile.getBytes());
 	}
 	
 	/**
@@ -103,6 +170,10 @@ public class Utility
 		profile.prints.rightThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[9].getAbsolutePath())));
 	}
 	
+	/**
+	 * Associates SHUAFISMain.canidates with their respective prints in /prints.
+	 * @see associatePrintsWithProfile()
+	 */
 	public static void associateAllPrints() 
 	{
 		for (Profile profile : SHUAFISMain.candidates) 
