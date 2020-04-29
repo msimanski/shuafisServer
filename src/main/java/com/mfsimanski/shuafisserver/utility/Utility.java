@@ -37,7 +37,8 @@ public class Utility
 		System.out.println(LocalDateTime.now() + " [INFO]: Encaching directory " + directory.getAbsolutePath() + ".");
 		
 		// Array containing all files in the directory
-		File[] listOfFiles = directory.listFiles();
+		File[] listOfFiles = directory.listFiles(File::isFile);
+		Arrays.sort(listOfFiles);
 		
 		// Create a new directory to put the compressed files in.
 		File newDirectory = new File(directory.getAbsolutePath() + "/cache");
@@ -134,6 +135,7 @@ public class Utility
 		File printsDirectory = new File("prints/");
 		// Array containing all directories in the directory
 		File[] listOfFiles = printsDirectory.listFiles(File::isDirectory);
+		Arrays.sort(listOfFiles);
 		
 		// Each file in that array will have it's own files, so we have to loop through them.
 		for (File file : listOfFiles)
@@ -157,6 +159,7 @@ public class Utility
 		// Directory of cached files.
 		File temp = new File("prints/" + Integer.toString(profile.id) + "/cache");
 		File[] arrayOfFiles = temp.listFiles((dir, name) -> name.toLowerCase().endsWith(".gz"));
+		Arrays.sort(arrayOfFiles);
 		
 		profile.prints.leftIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[0].getAbsolutePath())));
 		profile.prints.leftLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(arrayOfFiles[1].getAbsolutePath())));

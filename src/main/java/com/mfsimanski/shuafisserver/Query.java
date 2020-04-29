@@ -3,11 +3,16 @@ package com.mfsimanski.shuafisserver;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.machinezoo.sourceafis.FingerprintImage;
 import com.machinezoo.sourceafis.FingerprintMatcher;
 import com.machinezoo.sourceafis.FingerprintTemplate;
 import com.mfsimanski.shuafisserver.model.Profile;
+import com.mfsimanski.shuafisserver.model.Statistics;
+import com.mfsimanski.shuafisserver.model.StatisticsRepository;
 
 public class Query
 {	
@@ -62,7 +67,7 @@ public class Query
 	 * @return
 	 */
 	public static Map<String, Object> compareOneToN(byte[] probeRaw, ArrayList<Profile> candidates)
-	{
+	{	
 		FingerprintTemplate probe = new FingerprintTemplate(new FingerprintImage().dpi(500).decode(probeRaw));
 		FingerprintMatcher matcher = new FingerprintMatcher().index(probe);
 		Profile match = null;
