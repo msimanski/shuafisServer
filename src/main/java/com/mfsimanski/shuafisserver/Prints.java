@@ -1,13 +1,13 @@
 package com.mfsimanski.shuafisserver;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import com.machinezoo.sourceafis.FingerprintImage;
 import com.machinezoo.sourceafis.FingerprintTemplate;
 
+/**
+ * @author michaelsimanski
+ * Class representing collection of prints for a Profile object. Has associated helper methods.
+ */
 public class Prints
 {
 	// Fingers goes:
@@ -34,13 +34,17 @@ public class Prints
 	public FingerprintTemplate rightRing;
 	public FingerprintTemplate rightThumb;
 	
+	
 	/**
-	 * @return
+	 * Generates an iterable of the prints from the caller instance.
+	 * @return An FingerprintTemplate iterable of the prints from the caller instance.
 	 */
 	public Iterable<FingerprintTemplate> getIterableOfPrints()
 	{
+		// Create a temporary list to put the prints in
 		ArrayList<FingerprintTemplate> temp = new ArrayList<FingerprintTemplate>();
 		
+		// Add the prints to the temp
 		temp.add(this.leftIndex);
 		temp.add(this.leftLittle);
 		temp.add(this.leftMiddle);
@@ -52,274 +56,10 @@ public class Prints
 		temp.add(this.rightRing);
 		temp.add(this.rightThumb);
 		
+		// Utilize the iterable interface
 		Iterable<FingerprintTemplate> dummy = temp;
 		
+		// Return the prints iterable
 		return dummy;
 	}
-	
-//	/**
-//	 * @param index
-//	 * @param pathArrayList
-//	 * @param cache
-//	 * @throws IOException
-//	 */
-//	public void loadTemplatesFromImage(int index, ArrayList<String> pathArrayList, boolean cache) throws IOException 
-//	{
-//		if (cache)
-//		{
-//			byte[] probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			FingerprintTemplate probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//			
-//			// This snippet saves it to a compressed format for faster load times
-//			byte[] serialized = probe.toByteArray();
-//			String directory = Paths.get(pathArrayList.get(index)).getParent().getParent().toString();
-//			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
-//
-//			this.leftIndex = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//			
-//			serialized = probe.toByteArray();
-//			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
-//
-//			this.leftLittle = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//			
-//			serialized = probe.toByteArray();
-//			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
-//
-//			this.leftMiddle = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//			
-//			serialized = probe.toByteArray();
-//			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
-//
-//			this.leftRing = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//			
-//			serialized = probe.toByteArray();
-//			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
-//
-//			this.leftThumb = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//			
-//			serialized = probe.toByteArray();
-//			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
-//
-//			this.rightIndex = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//			
-//			serialized = probe.toByteArray();
-//			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
-//
-//			this.rightLittle = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//			
-//			serialized = probe.toByteArray();
-//			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
-//
-//			this.rightMiddle = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//			
-//			serialized = probe.toByteArray();
-//			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
-//
-//			this.rightRing = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//			
-//			serialized = probe.toByteArray();
-//			Files.write(Paths.get(directory + "/cache/" + (index + 1) + ".json.gz"), serialized);
-//
-//			this.rightThumb = probe;
-//			index++;
-//		}
-//		else 
-//		{
-//			byte[] probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			FingerprintTemplate probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//
-//			this.leftIndex = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//
-//			this.leftLittle = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//
-//			this.leftMiddle = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//
-//			this.leftRing = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//
-//			this.leftThumb = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//
-//			this.rightIndex = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//
-//			this.rightLittle = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//
-//			this.rightMiddle = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//
-//			this.rightRing = probe;
-//			index++;
-//			
-//			probeImage = Files.readAllBytes(Paths.get(pathArrayList.get(index)));
-//			probe = new FingerprintTemplate(
-//				    new FingerprintImage()
-//				        .dpi(500)
-//				        .decode(probeImage));
-//
-//			this.rightThumb = probe;
-//			index++;
-//		}
-//	}
-//	
-//	/**
-//	 * @param index
-//	 * @param pathArrayList
-//	 * @throws IOException
-//	 */
-//	public void loadTemplatesFromCache(int index, ArrayList<String> pathArrayList) throws IOException 
-//	{
-//		String directory = Paths.get("").toString();
-//		
-//		this.leftIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
-//		index++;
-//
-//		this.leftLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
-//		index++;
-//
-//		this.leftMiddle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
-//		index++;
-//
-//		this.leftRing = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
-//		index++;
-//
-//		this.leftThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
-//		index++;
-//
-//		this.rightIndex = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
-//		index++;
-//
-//		this.rightLittle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
-//		index++;
-//
-//		this.rightMiddle = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
-//		index++;
-//
-//		this.rightRing = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
-//		index++;
-//
-//		this.rightThumb = new FingerprintTemplate(Files.readAllBytes(Paths.get(directory + "cache/" + (index + 1) + ".json.gz")));
-//		index++;
-//	}
 }

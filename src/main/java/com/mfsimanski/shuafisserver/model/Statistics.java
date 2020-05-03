@@ -4,6 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * @author michaelsimanski
+ * Persistence entity representing statistics table in database.
+ */
 @Entity
 @Table(name = "statistics")
 public class Statistics

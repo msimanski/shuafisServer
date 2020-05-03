@@ -21,10 +21,15 @@ import com.mfsimanski.shuafisserver.model.ProfileRepository;
 import com.mfsimanski.shuafisserver.model.Statistics;
 import com.mfsimanski.shuafisserver.model.StatisticsRepository;
 
+/**
+ * @author michaelsimanski
+ * Spring controller method responsible for handling queries.
+ */
 @Controller
 @CrossOrigin //("http://localhost:2908")
 public class QueryController
 {
+	// Database repository CRUD objects
 	@Autowired
 	ProfileRepository profileRepository;
 	
@@ -32,8 +37,9 @@ public class QueryController
 	StatisticsRepository statisticsRepository;
 
 	/**
-	 * @param file
-	 * @return
+	 * Handle a 1:N query request.
+	 * @param file File sent to be queried.
+	 * @return JSON response payload.
 	 */
 	@PostMapping("/compareoneton")
 	public ResponseEntity<Map<String, Object>> compareOneToN(@RequestParam("file") MultipartFile file)
@@ -49,14 +55,12 @@ public class QueryController
 		String message = "";
 		try
 		{
-			//storageService.save(file);
-	
+			// Do the comparison and store the result
 			Map<String, Object> result = Query.compareOneToN(file.getBytes(), SHUAFISMain.candidates);
 			
 			// Increment ident number
 			if (result.get("ident").equals(true)) 
 			{
-				// Increment the query number
 				statsOptional = statisticsRepository.findById(1);
 				stats = statsOptional.get();
 				stats.setTotalIdentQueries(stats.getTotalIdentQueries() + 1);
@@ -65,12 +69,14 @@ public class QueryController
 			
 			System.out.println(LocalDateTime.now() + " [INFO]: 1:N comparison request successful.");
 			
+			// Return the payload
 			return ResponseEntity.status(HttpStatus.OK).body(result);
 		} 
 		catch (Exception e)
 		{
 			System.out.println(LocalDateTime.now() + " [ERROR]: 1:N comparison request failed.");
 			
+			// Assuming we are FUBAR, catch the exception
 			message = "Could not upload the files! " + ExceptionUtils.getStackTrace(e);
 		    HashMap<String, Object> temp = new HashMap<String, Object>();
 		    temp.put("message", message);
@@ -80,9 +86,10 @@ public class QueryController
 	}
 
 	/**
-	 * @param file1
-	 * @param file2
-	 * @return
+	 * Handle a 1:1 query request.
+	 * @param file1 The first print file to be compared.
+	 * @param file2 The second print file to be compared.
+	 * @return Results payload.
 	 */
 	@PostMapping("/compareonetoone")
 	public ResponseEntity<Map<String, Object>> compareOneToOne(@RequestParam("file1") MultipartFile file1, @RequestParam("file2") MultipartFile file2) 
@@ -92,44 +99,40 @@ public class QueryController
 		Statistics stats = statsOptional.get();
 		stats.setTotalQueries(stats.getTotalQueries() + 1);
 		statisticsRepository.save(stats);
-				
-	    String message = "";
-	    
-	    System.out.println(LocalDateTime.now() + " [INFO]: 1:1 comparison request made.");
-	    
-	    try 
-	    {
-	      // Candidate
-	      //storageService.save(file1);
-	      // probe
-	      //storageService.save(file2);
-	      
-	      Map<String, Object> result = Query.compareOneToOne(40, file1.getBytes(), file2.getBytes());
-	      
-	      // Increment ident number
-		  if (result.get("ident").equals(true)) 
-		  {
-			// Increment the query number
-			statsOptional = statisticsRepository.findById(1);
-			stats = statsOptional.get();
-			stats.setTotalIdentQueries(stats.getTotalIdentQueries() + 1);
-			statisticsRepository.save(stats);
-		  }
-	      
-	      System.out.println(LocalDateTime.now() + " [INFO]: 1:1 comparison successful.");
-	      
-	      return ResponseEntity.status(HttpStatus.OK).body(result);
-	    } 
-	    catch (Exception e) 
-	    {
-	    	System.out.println(LocalDateTime.now() + " [ERROR]: 1:1 comparison failed.");
-	    	
-	    	message = "Could not upload the files! " + e.getStackTrace();
-	    	HashMap<String, Object> temp = new HashMap<String, Object>();
-	    	temp.put("message", message);
-	    	Map<String, Object> r = temp;
-	    	return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(r);
-	    }
+		
+		String message = "";
+		
+		System.out.println(LocalDateTime.now() + " [INFO]: 1:1 comparison request made.");
+		
+		try 
+		{ 
+			// Perform the comparison
+			Map<String, Object> result = Query.compareOneToOne(40, file1.getBytes(), file2.getBytes());
+  
+			// Increment ident number
+			if (result.get("ident").equals(true)) 
+			{
+				statsOptional = statisticsRepository.findById(1);
+				stats = statsOptional.get();
+				stats.setTotalIdentQueries(stats.getTotalIdentQueries() + 1);
+				statisticsRepository.save(stats);
+			}
+			
+			System.out.println(LocalDateTime.now() + " [INFO]: 1:1 comparison successful.");
+			
+			// Send back the payload
+			return ResponseEntity.status(HttpStatus.OK).body(result);
+		} 
+		catch (Exception e) 
+		{
+			System.out.println(LocalDateTime.now() + " [ERROR]: 1:1 comparison failed.");
+			
+			// We are FUBAR, catch the exception
+			message = "Could not upload the files! " + e.getStackTrace();
+			HashMap<String, Object> temp = new HashMap<String, Object>();
+			temp.put("message", message);
+			Map<String, Object> r = temp;
+			return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(r);
+		}
 	}
-
 }

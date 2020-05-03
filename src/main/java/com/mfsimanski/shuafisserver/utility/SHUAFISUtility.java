@@ -1,19 +1,14 @@
 package com.mfsimanski.shuafisserver.utility;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.stream.Stream;
 
-import org.apache.commons.io.FileUtils;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.machinezoo.sourceafis.FingerprintImage;
@@ -22,7 +17,11 @@ import com.mfsimanski.shuafisserver.Prints;
 import com.mfsimanski.shuafisserver.SHUAFISMain;
 import com.mfsimanski.shuafisserver.model.Profile;
 
-public class Utility
+/**
+ * @author michaelsimanski
+ * Class housing miscellaneous utility helper methods.
+ */
+public class SHUAFISUtility
 {	
 	/**
 	 * When supplied with a directory, this method will create cached versions of the ten fingerprint
@@ -186,148 +185,10 @@ public class Utility
 				associatePrintsWithProfile(profile);
 			} catch (IOException e)
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-	
-//	/**
-//	 * @throws IOException 
-//	 * 
-//	 */
-//	public static void encapsulatePrintsInDirectory() throws IOException 
-//	{
-//		//ArrayList<Profile> candidates = new ArrayList<Profile>(SHUAFISMain.candidates);
-//		//Iterable<Profile> iterable = candidates;
-//		
-////		for (Profile profile : iterable) 
-////		{
-//			//Path dir = Paths.get("prints/" + Integer.toString(profile.id));
-//			//Files.createDirectory(dir);
-//			
-//			File folder = new File("prints/");
-//			File[] listOfFiles = folder.listFiles();
-//			Arrays.sort(listOfFiles);
-//			
-//			ArrayList<File[]> fubar = new ArrayList<File[]>();
-//			for (int i = 0; i < 6000; i += 10) 
-//			{
-//				fubar.add(Arrays.copyOfRange(listOfFiles, i, i + 10));
-//			}
-//			
-//			int foo = 0;
-//			
-//			for (File[] file : fubar) 
-//			{
-//				File dest = new File("prints/" + Integer.toString(foo + 1));
-//				foo++;
-//				for (File unit : file) 
-//				{
-//					File source = new File(unit.getAbsolutePath());
-//					
-//					try {
-//					    FileUtils.copyFileToDirectory(source, dest);
-//					} catch (IOException e) {
-//					    e.printStackTrace();
-//					}
-//				}
-//			}
-//	}
-			
-//			int iterate = 0;
-//			
-//			for (int i = 0; i < 600; i += 10)
-//			{
-//				iterate = i;
-//				for (int j = 0; j < 10; j++) 
-//				{
-//					File source = new File(listOfFiles[iterate].getAbsolutePath());
-//					File dest = new File("prints/" + Integer.toString(profile.id));
-//					try {
-//					    FileUtils.copyFileToDirectory(source, dest);
-//					} catch (IOException e) {
-//					    e.printStackTrace();
-//					}
-//					iterate++;
-//				}
-//			}
-		//}
-	
-//	/**
-//	 * @param candidates
-//	 */
-//	public static void initializeProfiles(ArrayList<Profile> candidates) 
-//	{
-//		for (int i = 0; i < 600; i++)
-//		{
-//			candidates.add(new Profile(i + 1));
-//			candidates.get(i).prints = new Prints();
-//		}
-//	}
-//
-//	/**
-//	 * @param cache
-//	 * @param loadFromCache
-//	 */
-//	public static void loadPrints(boolean cache, boolean loadFromCache)
-//	{
-//		SHUAFISMain.candidates = new ArrayList<Profile>();
-//		initializeProfiles(SHUAFISMain.candidates);
-//		ArrayList<String> pathArrayList = new ArrayList<String>();
-//	
-//		// Before starting the server, load the prints into memory
-//		System.out.println(LocalDateTime.now() + " [INFO]: Loading prints into memory. This will take a long time.");
-//	
-//		try (Stream<Path> paths = Files
-//				.walk(Paths.get("prints/")))
-//		{
-//			paths.filter(Files::isRegularFile).forEach(path ->
-//			{
-//				pathArrayList.add(path.toString());
-//			});
-//		} catch (IOException e)
-//		{
-//			e.printStackTrace();
-//		}
-//	
-//		pathArrayList.sort(String::compareToIgnoreCase);
-//		try
-//		{
-//			Utility.loadPrintsToMemory(SHUAFISMain.candidates, pathArrayList, cache, loadFromCache);
-//		} catch (IOException e)
-//		{
-//			e.printStackTrace();
-//		}
-//	}
-//
-//	/**
-//	 * @param candidates
-//	 * @param pathArrayList
-//	 * @param cache
-//	 * @param loadFromCache
-//	 * @throws IOException
-//	 */
-//	public static void loadPrintsToMemory(ArrayList<Profile> candidates, ArrayList<String> pathArrayList, boolean cache, boolean loadFromCache) throws IOException 
-//	{
-//		int index = 0;
-//		
-//		for (int i = 0; i < candidates.size(); i++)
-//		{
-//			System.out.println(LocalDateTime.now() + " [INFO]: Loading profile #" + (i +1));
-//			
-//			if (loadFromCache) 
-//			{
-//				candidates.get(i).prints.loadTemplatesFromCache(index, pathArrayList);
-//			}
-//			else
-//			{
-//				candidates.get(i).prints.loadTemplatesFromImage(index, pathArrayList, cache);
-//			}
-//			
-//			index += 10;
-//		}
-//	}
 
 	/**
 	 * Displays logo banner to standard output.

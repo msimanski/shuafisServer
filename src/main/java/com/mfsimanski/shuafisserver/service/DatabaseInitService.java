@@ -1,21 +1,22 @@
 package com.mfsimanski.shuafisserver.service;
 
-import java.text.Format;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.github.javafaker.Faker;
 import com.mfsimanski.shuafisserver.SHUAFISMain;
 import com.mfsimanski.shuafisserver.model.Profile;
 import com.mfsimanski.shuafisserver.model.ProfileRepository;
 
+/**
+ * @author michaelsimanski
+ * Service that handles the initialization of the database mapping in memory.
+ */
 @Service
 public class DatabaseInitService
 {
+	// Profile CRUD database repository
 	@Autowired
 	ProfileRepository profileRepository;
 	

@@ -20,16 +20,16 @@ import com.mfsimanski.shuafisserver.model.Profile;
 import com.mfsimanski.shuafisserver.model.ProfileRepository;
 import com.mfsimanski.shuafisserver.model.Statistics;
 import com.mfsimanski.shuafisserver.model.StatisticsRepository;
-import com.mfsimanski.shuafisserver.service.FilesStorageService;
-import com.mfsimanski.shuafisserver.utility.Utility;
+import com.mfsimanski.shuafisserver.utility.SHUAFISUtility;
 
+/**
+ * @author michaelsimanski
+ * Spring controller that handles uploading profiles.
+ */
 @Controller
 @CrossOrigin //("http://localhost:2908")
 public class UploadController
 {
-	@Autowired
-	FilesStorageService storageService;
-	
 	@Autowired
 	ProfileRepository profileRepository;
 	
@@ -56,7 +56,7 @@ public class UploadController
 	 * @param phone
 	 * @param ssid
 	 * @param dob
-	 * @return
+	 * @return Status payload.
 	 */
 	@PostMapping("/uploadprofile")
 	public ResponseEntity<Map<String, Object>> uploadProfile(
@@ -99,7 +99,7 @@ public class UploadController
 		// Save the files to new folder.
 		try
 		{
-			Utility.saveNewTencardImages(id, leftLittleFile, leftRingFile, leftMiddleFile, leftIndexFile, 
+			SHUAFISUtility.saveNewTencardImages(id, leftLittleFile, leftRingFile, leftMiddleFile, leftIndexFile, 
 					leftThumbFile, rightLittleFile, rightRingFile, rightMiddleFile, rightIndexFile, rightThumbFile);
 		} catch (IOException e1)
 		{
@@ -115,7 +115,7 @@ public class UploadController
 		// Cache the files.
 		try
 		{
-			Utility.cacheTencardImages(new File("prints/" + Integer.toString(id)));
+			SHUAFISUtility.cacheTencardImages(new File("prints/" + Integer.toString(id)));
 		} catch (IOException e2)
 		{
 			e2.printStackTrace();
@@ -129,7 +129,7 @@ public class UploadController
 		// Associate the cache with the new instance.
 		try
 		{
-			Utility.associatePrintsWithProfile(newProfile);
+			SHUAFISUtility.associatePrintsWithProfile(newProfile);
 		} catch (IOException e3)
 		{
 			e3.printStackTrace();

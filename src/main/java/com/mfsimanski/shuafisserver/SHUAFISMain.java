@@ -3,8 +3,6 @@ package com.mfsimanski.shuafisserver;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,33 +14,33 @@ import com.mfsimanski.shuafisserver.model.ProfileRepository;
 import com.mfsimanski.shuafisserver.model.Statistics;
 import com.mfsimanski.shuafisserver.model.StatisticsRepository;
 import com.mfsimanski.shuafisserver.service.DatabaseInitService;
-import com.mfsimanski.shuafisserver.service.FilesStorageService;
-import com.mfsimanski.shuafisserver.utility.Utility;
+import com.mfsimanski.shuafisserver.utility.SHUAFISUtility;
 
 /**
  * @author michaelsimanski
+ * Main class controlling the application. Central location of candidates in memory.
  */
 @ComponentScan("com.mfsimanski.shuafisserver")
 @SpringBootApplication()
 public class SHUAFISMain implements CommandLineRunner
 {
-	@Resource
-	FilesStorageService storageService;
-	
+	// CRUD repository objects
 	@Autowired
 	StatisticsRepository statisticsRepository;
 	
 	@Autowired
 	ProfileRepository profileRepository;
 	
+	// Database service
 	@Autowired
 	DatabaseInitService databaseInitService;
-
+	
+	// List of candidates in memory
 	public static ArrayList<Profile> candidates;
 
 	public static void main(String[] args)
 	{	
-		Utility.throwBanner();
+		SHUAFISUtility.throwBanner();
 		
 		SpringApplication.run(SHUAFISMain.class, args);
 	}
@@ -56,8 +54,12 @@ public class SHUAFISMain implements CommandLineRunner
 		bootProcess();
 	}
 	
+	/**
+	 * Manages the server boot process.
+	 */
 	private void bootProcess() 
 	{
+		// Initialize the server statistics
 		Optional<Statistics> statsOptional = statisticsRepository.findById(1);
 		Statistics stats = statsOptional.get();
 		stats.setIndexedProfiles((int)profileRepository.count());
@@ -65,10 +67,9 @@ public class SHUAFISMain implements CommandLineRunner
 		
 		// Initialize candidates
 		candidates = new ArrayList<Profile>();
-		// storageService.deleteAll();
-		storageService.init();
 		
+		// Load the candidates from memory and associate each with their corresponding prints
 		databaseInitService.loadCanidates();
-		Utility.associateAllPrints();
+		SHUAFISUtility.associateAllPrints();
 	}
 }

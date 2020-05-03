@@ -9,6 +9,10 @@ import javax.persistence.Transient;
 
 import com.mfsimanski.shuafisserver.Prints;
 
+/**
+ * @author michaelsimanski
+ * Persistence entity mapped to database representing profile table.
+ */
 @Entity
 @Table(name = "profile")
 public class Profile
@@ -24,7 +28,8 @@ public class Profile
 	public String phone;
 	public String ssid;
 	public String dob;
-
+	
+	// Prints abstraction in memory.
 	@Transient
 	public Prints prints;
 
