@@ -136,6 +136,7 @@ public class Query
 		HashMap<String, Object> tempMap = new HashMap<String, Object>();
 		tempMap.put("id", toBeMapified.id);
 		tempMap.put("name", toBeMapified.name);
+		tempMap.put("dob", toBeMapified.dob);
 		tempMap.put("address", toBeMapified.address);
 		tempMap.put("city", toBeMapified.city);
 		tempMap.put("state", toBeMapified.state);
